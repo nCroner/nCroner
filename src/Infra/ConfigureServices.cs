@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using nCroner.Common;
-using nCroner.Common.Tools;
+using nCroner.Core.Tools;
 using Serilog;
 
 namespace Infra;

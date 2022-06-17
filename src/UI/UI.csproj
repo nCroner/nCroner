@@ -19,6 +19,7 @@
       <Folder Remove="plugins" />
       <Folder Remove="data" />
       <Folder Remove="logs" />
+      <Folder Remove="cronJobs" />
     </ItemGroup>
 
 </Project>

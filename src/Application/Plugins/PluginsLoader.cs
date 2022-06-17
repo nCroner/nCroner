@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
-using nCroner.Common.Models;
-using nCroner.Common.Plugins;
+using nCroner.Core.Models;
+using nCroner.Core.Plugins;
 
 namespace Application.Plugins
 {
@@ -19,10 +19,10 @@ namespace Application.Plugins
             _services = services;
         }
 
+        #region Public methods
+        
         public void LoadPlugins()
         {
-            
-
             _triggerPlugins.Clear();
             _actionPlugins.Clear();
             _assemblies.Clear();
@@ -33,9 +33,9 @@ namespace Application.Plugins
 
             foreach (var dllPath in dllFiles)
             {
-                var dllP = $"{Directory.GetCurrentDirectory()}\\{dllPath}";
-                var dll = LoadAssembly(dllP);
-                var dllName = Path.GetFileName(dllP);
+                var dllFullPath = $"{Directory.GetCurrentDirectory()}\\{dllPath}";
+                var dll = LoadAssembly(dllFullPath);
+                var dllName = Path.GetFileName(dllFullPath);
 
                 Log($"Load plugin {dllName}");
                 LoadPluginsFromAssembly(dllName, dll);
@@ -44,7 +44,20 @@ namespace Application.Plugins
 
         public IReadOnlyCollection<TriggerTypeDataModel> Triggers => _triggerPlugins.AsReadOnly();
         public IReadOnlyCollection<TypeDataModel> Actions => _actionPlugins.AsReadOnly();
+        
+        public TriggerTypeDataModel? GetTrigger(Guid id)
+        {
+            return _triggerPlugins.FirstOrDefault(_ => _.Id == id);
+        }
+        
+        public TypeDataModel? GetAction(Guid id)
+        {
+            return _actionPlugins.FirstOrDefault(_ => _.Id == id);
+        }
 
+        #endregion
+        
+        
         #region Private methods
 
         /*private void AddInputOutput(IEnumerable<TypeDataModel> items)
@@ -71,7 +84,7 @@ namespace Application.Plugins
 
         private static IEnumerable<string> GetPluginDlls()
         {
-            var dllFiles = Directory.GetFiles("Plugins", "*.dll",
+            var dllFiles = Directory.GetFiles("plugins", "*.dll",
                 SearchOption.AllDirectories);
 
             return dllFiles;
@@ -159,7 +172,7 @@ namespace Application.Plugins
                 : default;
         }
 
-        private void Log(string text)
+        private static void Log(string text)
         {
             Console.WriteLine(text);
         }

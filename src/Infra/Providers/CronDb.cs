@@ -1,5 +1,5 @@
 ﻿using LiteDB;
-using nCroner.Common.Tools;
+using nCroner.Core.Tools;
 
 namespace Infra.Providers;
 

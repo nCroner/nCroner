@@ -1,5 +1,7 @@
 ﻿using Application.Models;
+using Application.Models.CronJobs;
 using Application.Plugins;
+using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,6 +14,7 @@ public static class ConfigureServices
         services.Configure<AppSettings>(configuration.GetSection("AppSettings"));
         LoadPlugins(services);
         
+        services.AddScoped<IValidator<CronJobModel>, CronJobModelValidator>();
     }
 
     private static void LoadPlugins(IServiceCollection services)
